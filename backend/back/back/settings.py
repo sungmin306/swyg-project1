@@ -37,14 +37,13 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(error_msg)
 
 SECRET_KEY = get_secret("SECRET_KEY")
-#### SECREC KEY 분리
+#### SECRET_KEY 분리
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
+#ALLOWED_HOSTS = ['.pythonantwhere.com']
 ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
