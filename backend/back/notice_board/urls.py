@@ -8,15 +8,15 @@ from rest_framework.routers import DefaultRouter
 # })
 
 
-# blog_detail = BlogViewSet.as_view({
-#     'get': 'retrieve',
-#     'put': 'update',
-#     'delete': 'destroy'
-# })
+blog_detail = BlogViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'delete': 'destroy'
+})
 router = DefaultRouter()
-router.register('/blog', BlogViewSet)
-router.register('/comment', CommentViewSet, basename='comment')
+router.register('blog', BlogViewSet)
+router.register('comment', CommentViewSet, basename='comment')
 urlpatterns =[
     path('', include(router.urls)),
- #   path('blog/<int:pk>/', blog_detail),
+    path('blog/<int:pk>/', blog_detail),
 ]

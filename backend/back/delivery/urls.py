@@ -5,7 +5,7 @@ from .views import PostViewset
 
 
 router = DefaultRouter()
-router.register('/order', PostViewset)
+router.register('order', PostViewset)
 urlpatterns = [
     path('', include(router.urls)),
     # path('/get',views.get_api),

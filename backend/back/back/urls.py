@@ -22,15 +22,8 @@ from rest_auth.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('rest-auth',include('rest_auth.urls')),
-    # 로그인
-    path('rest-auth/login', LoginView.as_view(), name='rest_login'),
-    path('rest-auth/logout', LogoutView.as_view(), name='rest_logout'),
-    path('rest-auth/password/change', PasswordChangeView.as_view(), name='rest_password_change'),
-    #회원가입
-    path('rest-auth/registration/', include('rest_auth.registration.urls')), 
-    #배달
-    path('delivery',include('delivery.urls')),
-    path('notice_board',include('notice_board.urls')),
+    path('account/',include('account.urls')),
+    path('delivery/',include('delivery.urls')),
+    path('notice_board/',include('notice_board.urls')),
 
 ]
