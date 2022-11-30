@@ -23,6 +23,7 @@ from rest_auth.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/',include('account.urls')),
+    path('accounts/',include('accounts.urls')),
     path('delivery/',include('delivery.urls')),
     path('notice_board/',include('notice_board.urls')),
 

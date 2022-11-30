@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Post
 
 class PostSerializer(serializers.ModelSerializer):
-    #user = serializers.ReadOnlyField(source = 'user.username')
+    user = serializers.ReadOnlyField(source = 'user.nickname')
     class Meta:
         fields = (
             'id', # pk 값
@@ -12,5 +12,7 @@ class PostSerializer(serializers.ModelSerializer):
             'place',
             'food_category',
             'content',
+            'user',
+            'kakaourl'
         )
         model = Post

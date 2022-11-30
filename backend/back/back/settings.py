@@ -46,7 +46,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 # Application definition
 
+AUTH_USER_MODEL = 'accounts.User'
+
 INSTALLED_APPS = [
+    #django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,20 +60,24 @@ INSTALLED_APPS = [
     'django_filters',
     'django.contrib.sites',
     'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-
+    #'allauth.account',
+    #'rest_auth.registration',
+    #DRF Authentication
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
-
+    # 'rest_auth',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'rest_framework_simplejwt',
     'allauth.socialaccount',
     #react 연동
     'corsheaders',
 
     #myapp
+    #'account', #로그인로그아웃
     'delivery', #공동배달
-    'notice_board' #게시판
+    'notice_board', #게시판
+    'accounts'
 ]
 SITE_ID = 1
 #AUTH_USER_MODEL = 'accounts.User'
@@ -83,9 +90,11 @@ SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True   
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email' # 로그인 인증 방법 email 로 설정 ACCOUNT_EMAIL_REQUIRED = True 와 같이 사용
+ACCOUNT_EMAIL_REQUIRED = True    # 로그인 인증 방법 email 로 설정
+ACCOUNT_USERNAME_REQUIRED = False# 로그인 할때 username 이 필요없더라도 회원가입 시 username을 필수로 적게끔 함
+CCOUNT_EMAIL_VERIFICATION = 'none' # 회원가입 과정에서 이메일 인증 사용 X
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 AUTHENTICATION_BACKENDS = (
  "django.contrib.auth.backends.ModelBackend",
@@ -97,11 +106,12 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         #Authentication을 모든 view에서 동일하게 사용하는 setting
-        'rest_framework.authentication.BasicAuthentication', 
-        'rest_framework.authentication.SessionAuthentication',
-        #'rest_framework.authentication.TokenAuthentication', # Postman에서 돌릴때
+        #'rest_framework.authentication.BasicAuthentication',  #username & password 로 식별하는 가장 기본적인 방식
+        #'rest_framework.authentication.SessionAuthentication', #django default session backend 이용하는 방식 -> 무슨 소리인지 모르겠다
+        #'rest_framework.authentication.TokenAuthentication', # Postman에서 돌릴때 client - server api 방식
+        'rest_framework_simplejwt.authentication.JWTAuthentication', # simple jwt 방식 사용
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
@@ -109,13 +119,21 @@ REST_FRAMEWORK = {
 
 REST_USE_JWT = True
 
-JWT_AUTH = {
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
+SIMPLE_JWT = {
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'ACCESS_TOKEN_LIFETIME' : datetime.timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME' : datetime.timedelta(days=7)
+
 }
+
+# JWT_AUTH = {
+#     'JWT_SECRET_KEY': SECRET_KEY,
+#     'JWT_ALGORITHM': 'HS256',
+#     'JWT_ALLOW_REFRESH': True,
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+#     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
+# }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',     # react 연동

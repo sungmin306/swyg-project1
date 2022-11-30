@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.pagination import PageNumberPagination   # 페이지 분할해서 request
 from collections import OrderedDict # 페이지 분할해서  request
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
@@ -41,13 +42,14 @@ class PostPageNumberPagination(PageNumberPagination):
             ('pageCnt', self.page.paginator.num_pages), # 총 페이지수
             ('curPage', self.page.number), # 현재 페이지 
         ]))
-
+#@csrf_exempt
 class PostViewset(viewsets.ModelViewSet):
     authentication_classes=[BasicAuthentication, SessionAuthentication] # 권한
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly] # 권한
     queryset = Post.objects.all()
-    pagination_class = PostPageNumberPagination
     serializer_class = PostSerializer
+    pagination_class = PostPageNumberPagination
+    #serializer_class = PostSerializer
     
     def perform_create(self, serializer):
         serializer.save(user = self.request.user)
