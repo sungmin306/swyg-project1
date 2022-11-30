@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django.contrib.sites',
     'allauth',
-    #'allauth.account',
+    'allauth.account',
     #'rest_auth.registration',
     #DRF Authentication
     'rest_framework',
