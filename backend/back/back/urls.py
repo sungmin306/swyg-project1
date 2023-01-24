@@ -15,15 +15,19 @@ Including another URLconfs
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_auth.views import (
     LoginView, LogoutView, PasswordChangeView,
     PasswordResetView, PasswordResetConfirmView
 )
-
+#account_module clear problem
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/',include('accounts.urls')),
+    path('account/',include('account.urls')),
+    #path('accounts/',include('accounts.urls')),
     path('delivery/',include('delivery.urls')),
     path('notice_board/',include('notice_board.urls')),
+    path('user/', include('users.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-]
